@@ -95,15 +95,18 @@ input:focus{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
 .crit-table{width:100%;border-collapse:collapse}
 .crit-table tr{border-bottom:1px solid var(--border)}
 .crit-table tr:last-child{border-bottom:none}
-.crit-table td{padding:13px 20px;vertical-align:middle}
-.crit-table td:first-child{width:43%}
-.crit-name{font-size:13px;font-weight:500;color:var(--text)}
-.w-chip{
-  display:inline-flex;font-size:10px;font-weight:600;
-  text-transform:uppercase;letter-spacing:.05em;
-  color:var(--text-3);background:var(--bg);
-  border:1px solid var(--border);border-radius:4px;
-  padding:1px 6px;margin-left:5px;
+.crit-table td{padding:14px 20px;vertical-align:top}
+.crit-table td:first-child{width:38%}
+.crit-name{display:block;font-size:13px;font-weight:500;color:var(--text);line-height:1.4}
+.crit-meta{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:11px;font-weight:500;color:var(--text-3);
+  margin-top:5px;
+}
+.crit-meta-dot{width:3px;height:3px;border-radius:50%;background:var(--border-input)}
+.opt-desc{
+  font-size:12px;color:var(--text-2);
+  margin-top:6px;line-height:1.5;
 }
 select{
   width:100%;height:36px;padding:0 30px 0 10px;
@@ -197,7 +200,7 @@ select:hover{background-color:var(--bg)}
   <div class="card">
     <div class="card-body">
       <label class="field-label" for="cname">Nome da campanha</label>
-      <input type="text" id="cname" placeholder="Digite o nome da campanha">
+      <input type="text" id="cname" placeholder="Digite o nome da campanha aqui">
     </div>
   </div>
 
@@ -316,10 +319,25 @@ const TIER={
 const tbody=document.getElementById('crit-body');
 CRIT.forEach(c=>{
   const tr=document.createElement('tr');
-  const opts=c.opts.map((o,i)=>`<option value="${i+1}">${i+1} — ${o}</option>`).join('');
-  tr.innerHTML=`<td><span class="crit-name">${c.name}</span><span class="w-chip">P ${c.w}</span></td><td><select id="${c.id}" onchange="calc()">${opts}</select></td>`;
+  const opts=c.opts.map((_,i)=>`<option value="${i+1}">Nível ${i+1}</option>`).join('');
+  tr.innerHTML=`
+    <td>
+      <span class="crit-name">${c.name}</span>
+      <span class="crit-meta"><span class="crit-meta-dot"></span>Peso ${c.w}</span>
+    </td>
+    <td>
+      <select id="${c.id}" onchange="calc();updateDesc('${c.id}')">${opts}</select>
+      <p class="opt-desc" id="desc-${c.id}"></p>
+    </td>`;
   tbody.appendChild(tr);
 });
+
+function updateDesc(id){
+  const c=CRIT.find(x=>x.id===id);
+  const v=+document.getElementById(id).value;
+  document.getElementById('desc-'+id).textContent=c.opts[v-1];
+}
+function updateAllDescs(){CRIT.forEach(c=>updateDesc(c.id))}
 
 function calc(){
   let total=0,vals={};
@@ -350,6 +368,7 @@ function calc(){
 }
 
 calc();
+updateAllDescs();
 </script>
 </body>
 </html>
