@@ -174,13 +174,57 @@ select:hover{background-color:var(--bg)}
   opacity:.9;
 }
 
+.print-val{display:none}
+
 /* ── Print styles ── */
 @media print{
-  body{background:#fff;padding:0}
-  .card{break-inside:avoid;box-shadow:none}
+  @page{size:A4 portrait;margin:8mm 12mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff;padding:0;font-size:12px}
+  .page{max-width:100%}
+
+  .ph{margin-bottom:10px}
+  h1{font-size:17px}
+  .ph-desc{font-size:11px;margin-top:2px}
+
+  .brand-bar{padding:4px 10px 4px 8px;margin-bottom:10px;border-radius:5px}
+  .brand-logo{height:20px}
+  .brand-label{font-size:11px}
+
+  .card{margin-bottom:6px;break-inside:avoid;box-shadow:none;border:1px solid #e4e4e7}
+  .card-header{padding:8px 14px}
+  .card-title{font-size:12px}
+  .card-sub{font-size:10px;margin-top:1px}
+  .card-body{padding:10px 14px}
+
+  .field-label{font-size:10px;margin-bottom:3px}
+  input[type=text]{height:26px;font-size:12px;padding:0 10px;border:1px solid #d4d4d8}
+
+  .score-row{gap:14px}
+  .score-big{font-size:28px}
+  .score-of{font-size:10px}
+  .score-sep{margin:2px 0}
+  .track-lbl{font-size:9px;margin-bottom:6px}
+  .track-bg{height:7px;margin-bottom:4px}
+  .zone-labels span{font-size:9px}
+  .badge{padding:2px 8px;font-size:11px;margin-top:6px}
+  .badge-dot{width:5px;height:5px}
+
+  .crit-table td{padding:6px 14px}
+  .crit-name{font-size:12px}
+  .crit-meta{margin-top:1px;font-size:10px}
+  select{display:none}
+  .opt-desc{display:none}
+  .print-val{display:block;font-size:12px;color:#09090B;line-height:1.4}
+  .print-val strong{font-weight:600}
+
+  .gov-table td{padding:6px 14px;font-size:12px}
+  .gov-table td:first-child{font-size:12px}
+
   .btn-print{display:none}
-  select{-webkit-appearance:none;appearance:none;border:none;background:none;padding:0;font-size:13px}
-  .mandatory-alert{border-left:3px solid #EF4444}
+  .mandatory-alert{border-left:3px solid #EF4444;padding:8px 12px;break-inside:avoid}
+  .alert-ttl{font-size:12px}
+  .alert-body{font-size:11px}
 }
 </style>
 </head>
@@ -328,6 +372,7 @@ CRIT.forEach(c=>{
     <td>
       <select id="${c.id}" onchange="calc();updateDesc('${c.id}')">${opts}</select>
       <p class="opt-desc" id="desc-${c.id}"></p>
+      <p class="print-val" id="pval-${c.id}"></p>
     </td>`;
   tbody.appendChild(tr);
 });
@@ -336,6 +381,7 @@ function updateDesc(id){
   const c=CRIT.find(x=>x.id===id);
   const v=+document.getElementById(id).value;
   document.getElementById('desc-'+id).textContent=c.opts[v-1];
+  document.getElementById('pval-'+id).innerHTML=`<strong>Nível ${v}</strong> &mdash; ${c.opts[v-1]}`;
 }
 function updateAllDescs(){CRIT.forEach(c=>updateDesc(c.id))}
 
