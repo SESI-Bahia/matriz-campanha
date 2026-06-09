@@ -1,230 +1,332 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora - Matriz de Classificação de Campanhas</title>
-    <style>
-        body { font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: 0 auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h1, h2 { color: #0056b3; }
-        .header-section { margin-bottom: 20px; }
-        .header-section input { width: 100%; padding: 10px; font-size: 1.1em; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; vertical-align: top; }
-        th { background-color: #f8f9fa; }
-        select { padding: 8px; width: 100%; border: 1px solid #ccc; border-radius: 4px; white-space: normal; }
-        option { white-space: normal; }
-        .result-box { padding: 15px; margin: 20px 0; border-radius: 5px; background: #e9ecef; font-size: 1.2em; font-weight: bold; text-align: center; }
-        .alert { color: #d9534f; font-size: 1em; display: none; margin-top: 15px; font-weight: normal; border: 1px solid #d9534f; padding: 10px; border-radius: 4px; background-color: #fdf2f2; }
-        .governance-table th, .governance-table td { border: 1px solid #ddd; white-space: pre-line; }
-        .governance-table th { background-color: #0056b3; color: white; }
-        .btn-pdf { display: block; width: 100%; padding: 15px; background-color: #28a745; color: white; border: none; font-size: 1.1em; font-weight: bold; border-radius: 5px; cursor: pointer; text-align: center; margin-top: 20px; }
-        .btn-pdf:hover { background-color: #218838; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matriz de Classificação de Campanhas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F9FAFB;--surface:#FFFFFF;--border:#E4E4E7;--border-input:#D4D4D8;
+  --text:#09090B;--text-2:#52525B;--text-3:#A1A1AA;
+  --r:8px;--r-lg:12px;
+  --op-text:#52525B;--op-bg:#F4F4F5;--op-bd:#D4D4D8;--op-fill:#A1A1AA;--op-zone:#F0F0F2;
+  --tac-text:#92400E;--tac-bg:#FFFBEB;--tac-bd:#FDE68A;--tac-fill:#F59E0B;--tac-zone:#FFFBEB;
+  --est-text:#065F46;--est-bg:#ECFDF5;--est-bd:#A7F3D0;--est-fill:#10B981;--est-zone:#ECFDF5;
+}
+body{
+  font-family:'Inter',-apple-system,system-ui,sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;padding:40px 20px 80px;
+}
+.page{max-width:800px;margin:0 auto}
 
-        @media print {
-            body { background-color: #fff; padding: 0; }
-            .container { box-shadow: none; max-width: 100%; }
-            .btn-pdf { display: none; }
-            select { appearance: none; border: none; background: transparent; padding: 0; font-size: 1em; }
-        }
-    </style>
+/* ── Header ── */
+.ph{margin-bottom:28px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+h1{font-size:22px;font-weight:600;letter-spacing:-.025em;color:var(--text)}
+.ph-desc{font-size:13px;color:var(--text-2);margin-top:4px}
+
+/* ── Card ── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);margin-bottom:12px;overflow:hidden}
+.card-header{padding:16px 20px 14px;border-bottom:1px solid var(--border)}
+.card-title{font-size:13px;font-weight:600;color:var(--text)}
+.card-sub{font-size:12px;color:var(--text-3);margin-top:2px}
+.card-body{padding:16px 20px}
+
+/* ── Input ── */
+.field-label{display:block;font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:6px}
+input[type=text]{
+  display:block;width:100%;height:38px;padding:0 12px;
+  font-family:inherit;font-size:14px;color:var(--text);
+  background:var(--surface);border:1px solid var(--border-input);
+  border-radius:var(--r);outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+input::placeholder{color:var(--text-3)}
+input:focus{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+
+/* ── Score card ── */
+.score-row{display:flex;gap:20px;align-items:flex-start}
+.score-left{flex-shrink:0;min-width:80px}
+.score-big{font-size:52px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--text)}
+.score-of{font-size:12px;color:var(--text-3);margin-top:4px}
+.score-sep{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;margin:4px 0}
+.score-right{flex:1;padding-top:2px}
+.track-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text-3);margin-bottom:10px}
+
+/* ── Segmented progress track ── */
+.track-bg{
+  position:relative;height:10px;
+  border-radius:99px;border:1px solid var(--border);overflow:hidden;
+  display:flex;margin-bottom:7px;
+}
+.zone{flex:1;transition:background .3s}
+.zone-op {background:var(--op-zone)}
+.zone-tac{background:var(--tac-zone);border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.zone-est{background:var(--est-zone)}
+.track-fill{
+  position:absolute;top:0;left:0;bottom:0;
+  width:0%;border-radius:0;
+  z-index:2;
+  transition:width .45s cubic-bezier(.34,1.56,.64,1),background .25s ease;
+}
+.zone-labels{display:flex;margin-top:2px}
+.zone-labels span{flex:1;font-size:10px;color:var(--text-3)}
+.zone-labels span:nth-child(2){text-align:center}
+.zone-labels span:nth-child(3){text-align:right}
+
+/* ── Badge ── */
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:99px;
+  font-size:12px;font-weight:500;
+  border:1px solid transparent;margin-top:12px;
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.bd-pend{color:var(--text-3);background:var(--bg);border-color:var(--border)}
+.bd-op  {color:var(--op-text);background:var(--op-bg);border-color:var(--op-bd)}
+.bd-tac {color:var(--tac-text);background:var(--tac-bg);border-color:var(--tac-bd)}
+.bd-est {color:var(--est-text);background:var(--est-bg);border-color:var(--est-bd)}
+
+/* ── Criteria table ── */
+.crit-table{width:100%;border-collapse:collapse}
+.crit-table tr{border-bottom:1px solid var(--border)}
+.crit-table tr:last-child{border-bottom:none}
+.crit-table td{padding:13px 20px;vertical-align:middle}
+.crit-table td:first-child{width:43%}
+.crit-name{font-size:13px;font-weight:500;color:var(--text)}
+.w-chip{
+  display:inline-flex;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.05em;
+  color:var(--text-3);background:var(--bg);
+  border:1px solid var(--border);border-radius:4px;
+  padding:1px 6px;margin-left:5px;
+}
+select{
+  width:100%;height:36px;padding:0 30px 0 10px;
+  font-family:inherit;font-size:13px;color:var(--text);
+  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A1A1AA' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center;
+  border:1px solid var(--border-input);border-radius:var(--r);
+  appearance:none;-webkit-appearance:none;outline:none;cursor:pointer;
+  transition:border-color .15s,box-shadow .15s;
+}
+select:focus{border-color:#6366F1;box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+select:hover{background-color:var(--bg)}
+
+/* ── Mandatory alert ── */
+.mandatory-alert{
+  display:none;
+  border:1px solid #FECACA;border-left:3px solid #EF4444;
+  background:#FEF2F2;border-radius:var(--r);
+  padding:12px 16px;margin-bottom:12px;
+}
+.alert-ttl{
+  display:flex;align-items:center;gap:7px;
+  font-size:13px;font-weight:600;color:#B91C1C;margin-bottom:4px;
+}
+.alert-body{font-size:12px;color:#7F1D1D;line-height:1.7}
+
+/* ── Governance table ── */
+.gov-table{width:100%;border-collapse:collapse}
+.gov-table tr{border-bottom:1px solid var(--border)}
+.gov-table tr:last-child{border-bottom:none}
+.gov-table td{padding:13px 20px;font-size:13px;vertical-align:top}
+.gov-table td:first-child{width:27%;color:var(--text-2);font-weight:500;white-space:nowrap}
+.gov-table td:last-child{white-space:pre-line;color:var(--text)}
+.gov-empty{color:var(--text-3)}
+
+/* ── Print button ── */
+.btn-print{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;height:38px;padding:0;
+  font-family:inherit;font-size:13px;font-weight:500;
+  color:var(--text-2);background:var(--surface);
+  border:1px solid var(--border-input);border-radius:var(--r);
+  cursor:pointer;margin-top:16px;
+  transition:background .15s,color .15s,border-color .15s;
+}
+.btn-print:hover{background:var(--bg);color:var(--text);border-color:#A1A1AA}
+.btn-print svg{opacity:.55;flex-shrink:0}
+
+/* ── Print styles ── */
+@media print{
+  body{background:#fff;padding:0}
+  .card{break-inside:avoid;box-shadow:none}
+  .btn-print{display:none}
+  select{-webkit-appearance:none;appearance:none;border:none;background:none;padding:0;font-size:13px}
+  .mandatory-alert{border-left:3px solid #EF4444}
+}
+</style>
 </head>
 <body>
+<div class="page">
 
-<div class="container">
+  <div class="ph">
+    <p class="eyebrow">SESI Bahia · Marketing</p>
     <h1>Matriz de Classificação de Campanhas</h1>
-    
-    <div class="header-section">
-        <input type="text" id="campaign-name" placeholder="Insira o nome da campanha aqui">
+    <p class="ph-desc">Avalie os critérios para determinar o nível estratégico e a governança aplicável.</p>
+  </div>
+
+  <!-- Campaign name -->
+  <div class="card">
+    <div class="card-body">
+      <label class="field-label" for="cname">Nome da campanha</label>
+      <input type="text" id="cname" placeholder="Ex.: Campanha Flu 2025 — Indústrias da Bahia">
     </div>
+  </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th style="width: 25%;">Critério (Peso)</th>
-                <th style="width: 75%;">Nível de Classificação</th>
-            </tr>
-        </thead>
-        <tbody id="criteria-body">
-            <!-- Linhas geradas via JS -->
-        </tbody>
-    </table>
-
-    <div class="result-box">
-        Pontuação Total: <span id="total-score">0</span> <br>
-        Classificação Final: <span id="final-classification">-</span>
-        <div id="mandatory-alert" class="alert">
-            <strong>Regras mandatórias</strong><br><br>
-            Estratégica se:<br>
-            Relevância e Impacto = Estratégica<br>
-            ou<br>
-            Relevância e Leads = Estratégica
+  <!-- Score -->
+  <div class="card">
+    <div class="card-body">
+      <div class="score-row">
+        <div class="score-left">
+          <div class="score-big" id="total-score">13</div>
+          <div class="score-of">de 39 pts</div>
         </div>
+        <div class="score-sep"></div>
+        <div class="score-right">
+          <div class="track-lbl">Pontuação total · Classificação</div>
+          <div class="track-bg">
+            <div class="zone zone-op"></div>
+            <div class="zone zone-tac"></div>
+            <div class="zone zone-est"></div>
+            <div class="track-fill" id="track-fill"></div>
+          </div>
+          <div class="zone-labels">
+            <span>Operacional · 13–21</span>
+            <span>Tática · 22–30</span>
+            <span>Estratégica · 31–39</span>
+          </div>
+          <div id="badge-area">
+            <span class="badge bd-pend"><span class="badge-dot" style="background:var(--text-3)"></span>Aguardando</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <h2>Governança Aplicada</h2>
-    <table class="governance-table">
-        <thead>
-            <tr>
-                <th style="width: 30%;">Elemento</th>
-                <th style="width: 70%;">Diretriz</th>
-            </tr>
-        </thead>
-        <tbody id="governance-body">
-            <tr><td>Monitoramento</td><td id="gov-monitoramento">-</td></tr>
-            <tr><td>Tomada de decisão</td><td id="gov-tomada">-</td></tr>
-            <tr><td>Aprovação</td><td id="gov-aprovacao">-</td></tr>
-            <tr><td>Áreas Envolvidas</td><td id="gov-areas">-</td></tr>
-            <tr><td>Indicadores</td><td id="gov-indicadores">-</td></tr>
-        </tbody>
+  <!-- Mandatory alert -->
+  <div class="mandatory-alert" id="mandatory-alert">
+    <div class="alert-ttl">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Regra mandatória ativada
+    </div>
+    <div class="alert-body">Classificação promovida para <strong>Estratégica</strong> porque <strong>Relevância = nível 3</strong> e (<strong>Impacto nas Metas = 3</strong> ou <strong>Gestão de Leads = 3</strong>).</div>
+  </div>
+
+  <!-- Criteria -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Critérios de avaliação</div>
+      <div class="card-sub">Selecione o nível mais adequado para cada critério</div>
+    </div>
+    <table class="crit-table"><tbody id="crit-body"></tbody></table>
+  </div>
+
+  <!-- Governance -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Governança aplicada</div>
+      <div class="card-sub">Gerada automaticamente com base na classificação final</div>
+    </div>
+    <table class="gov-table">
+      <tbody>
+        <tr><td>Monitoramento</td><td id="gov-mon"><span class="gov-empty">—</span></td></tr>
+        <tr><td>Tomada de decisão</td><td id="gov-tom"><span class="gov-empty">—</span></td></tr>
+        <tr><td>Aprovação</td><td id="gov-apr"><span class="gov-empty">—</span></td></tr>
+        <tr><td>Áreas envolvidas</td><td id="gov-are"><span class="gov-empty">—</span></td></tr>
+        <tr><td>Indicadores</td><td id="gov-ind"><span class="gov-empty">—</span></td></tr>
+      </tbody>
     </table>
+  </div>
 
-    <button class="btn-pdf" onclick="window.print()">Gerar PDF</button>
+  <button class="btn-print" onclick="window.print()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 6 2 18 2 18 9"/>
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+      <rect x="6" y="14" width="12" height="8"/>
+    </svg>
+    Gerar PDF
+  </button>
+
 </div>
-
 <script>
-    const criteria = [
-        { 
-            id: 'relevancia', name: 'Relevância para o negócio', weight: 3,
-            options: [
-                { val: 1, text: "1 - Produto não especificado em PA" },
-                { val: 2, text: "2 - Produto em PA dos gerentes comerciais, de negócio e gerentes de unidade" },
-                { val: 3, text: "3 - Produto priorizado para o ano vigente (está em PA Diretor e Superintendentes, gera receita relevante...) Impacto na imagem institucional" }
-            ]
-        },
-        { 
-            id: 'impacto', name: 'Impacto nas Metas do Negócio', weight: 3,
-            options: [
-                { val: 1, text: "1 - Comunicação rotineira, relacionamento/divulgação pontual, sem impacto relevante em metas financeiras." },
-                { val: 2, text: "2 - Metas específicas de unidade, produto, região ou público prioritário, com impacto moderado nos resultados." },
-                { val: 3, text: "3 - Metas prioritárias institucionais, crescimento relevante de receita, expansão estratégica. Com alto impacto nos resultados da Instituição" }
-            ]
-        },
-        { 
-            id: 'leads', name: 'Gestão e conversão de leads', weight: 2,
-            options: [
-                { val: 1, text: "1 - Campanha de alcance. Baixo esforço de conversão" },
-                { val: 2, text: "2 - Até 02 canais de origem de leads. Régua de relacionamento aplicada em etapa especifica da jornada do lead. Médio esforço para conversão" },
-                { val: 3, text: "3 - Diversidade de origem de leads. Régua de relacionamento aplicada em varias etapas da jornada do lead. Alto esforço para conversão" }
-            ]
-        },
-        { 
-            id: 'esforco', name: 'Esforço da Operação da Campanha', weight: 2,
-            options: [
-                { val: 1, text: "1 - Comunicação informa e/ou consulta demais áreas" },
-                { val: 2, text: "2 - Envolvimento das áreas de comunicação, MKT e Comercial" },
-                { val: 3, text: "3 - Forte envolvimento das áreas de Comunicação, MKT e Comercial" }
-            ]
-        },
-        { 
-            id: 'mix', name: 'Mix de Meios', weight: 1,
-            options: [
-                { val: 1, text: "1 - 1 canal" },
-                { val: 2, text: "2 - Até 3 canais" },
-                { val: 3, text: "3 - Acima de 3 canais" }
-            ]
-        },
-        { 
-            id: 'abrangencia', name: 'Abrangência', weight: 1,
-            options: [
-                { val: 1, text: "1 - 1 região" },
-                { val: 2, text: "2 - a partir de 2 regiões" },
-                { val: 3, text: "3 - A partir de 2 regiões" }
-            ]
-        },
-        { 
-            id: 'investimento', name: 'Investimento da Campanha', weight: 1,
-            options: [
-                { val: 1, text: "1 - Até 20 mil" },
-                { val: 2, text: "2 - Entre 21 e 100 mil" },
-                { val: 3, text: "3 - Acima de 100 mil" }
-            ]
-        }
-    ];
+const CRIT=[
+  {id:'relevancia',name:'Relevância para o negócio',w:3,opts:[
+    'Produto não especificado em Plano de Ação',
+    'Produto em PA dos gerentes comerciais, de negócio e de unidade',
+    'Produto priorizado para o ano vigente (PA Diretor/Superintendentes) — gera receita relevante ou impacto institucional'
+  ]},
+  {id:'impacto',name:'Impacto nas metas do negócio',w:3,opts:[
+    'Comunicação rotineira ou divulgação pontual, sem impacto relevante em metas financeiras',
+    'Metas específicas de unidade, produto, região ou público, com impacto moderado nos resultados',
+    'Metas prioritárias institucionais, crescimento relevante de receita ou expansão estratégica'
+  ]},
+  {id:'leads',name:'Gestão e conversão de leads',w:2,opts:[
+    'Campanha de alcance — baixo esforço de conversão',
+    'Até 2 canais de origem. Régua aplicada em etapa específica da jornada. Médio esforço de conversão',
+    'Diversidade de origens. Régua aplicada em várias etapas da jornada. Alto esforço de conversão'
+  ]},
+  {id:'esforco',name:'Esforço da operação',w:2,opts:[
+    'Comunicação informa e/ou consulta demais áreas',
+    'Envolvimento de Comunicação, MKT e Comercial',
+    'Forte envolvimento de Comunicação, MKT e Comercial'
+  ]},
+  {id:'mix',name:'Mix de meios',w:1,opts:['1 canal','Até 3 canais','Acima de 3 canais']},
+  {id:'abrangencia',name:'Abrangência',w:1,opts:['1 região','A partir de 2 regiões','A partir de 3 regiões ou alcance estadual']},
+  {id:'investimento',name:'Investimento da campanha',w:1,opts:['Até R$ 20.000','Entre R$ 21.000 e R$ 100.000','Acima de R$ 100.000']}
+];
+const GOV={
+  Operacional:{mon:'Checkpoints de acordo com os canais e planejamento da campanha',tom:'Operacional\nFluxo padrão',apr:'Especialistas e demandante',are:'Comunicação e/ou MKT',ind:'Alcance e execução'},
+  Tática:     {mon:'Checkpoints de acordo com os canais e planejamento da campanha',tom:'Gerencial\nAjustes pontuais',apr:'Gerências de Comunicação e MKT',are:'Comunicação, MKT e Negócio',ind:'Leads, engajamento e performance'},
+  Estratégica:{mon:'Checkpoints de acordo com os canais e planejamento da campanha',tom:'Compartilhada\nAjustes contínuos durante a execução\nPode exigir exceções',apr:'Superintendência de Negócio e/ou Gerências de produto',are:'Comunicação, MKT, Negócio e Comercial (quando aplicável)',ind:'Conversão e impacto nas metas do negócio'}
+};
+const TIER={
+  Operacional:{fill:'#A1A1AA',cls:'bd-op'},
+  Tática:     {fill:'#F59E0B',cls:'bd-tac'},
+  Estratégica:{fill:'#10B981',cls:'bd-est'}
+};
 
-    const governanceRules = {
-        'Estratégica': { 
-            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
-            tomada: 'Compartilhada\nAjustes contínuos durante execução\nPode exigir exceções', 
-            aprovacao: 'Superintendência de Negócio e/ou Gerencias de produto', 
-            areas: 'Comunicação, MKT, Negócio e Comercial quando aplicável', 
-            indicadores: 'Conversão e impacto nas metas do negócio' 
-        },
-        'Tática': { 
-            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
-            tomada: 'Gerencial\nAjustes Pontuais', 
-            aprovacao: 'Gerências de Comunicação e MKT', 
-            areas: 'Comunicação, MKT e Negócio', 
-            indicadores: 'Leads, engajamento e performance' 
-        },
-        'Operacional': { 
-            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
-            tomada: 'Operacional\nFluxo padrão', 
-            aprovacao: 'Especialistas e demandante', 
-            areas: 'Comunicação e/ou MKT', 
-            indicadores: 'Alcance e execução' 
-        }
-    };
+const tbody=document.getElementById('crit-body');
+CRIT.forEach(c=>{
+  const tr=document.createElement('tr');
+  const opts=c.opts.map((o,i)=>`<option value="${i+1}">${i+1} — ${o}</option>`).join('');
+  tr.innerHTML=`<td><span class="crit-name">${c.name}</span><span class="w-chip">P ${c.w}</span></td><td><select id="${c.id}" onchange="calc()">${opts}</select></td>`;
+  tbody.appendChild(tr);
+});
 
-    const tbody = document.getElementById('criteria-body');
+function calc(){
+  let total=0,vals={};
+  CRIT.forEach(c=>{const v=+document.getElementById(c.id).value;vals[c.id]=v;total+=v*c.w;});
 
-    criteria.forEach(c => {
-        const tr = document.createElement('tr');
-        
-        let optionsHTML = '';
-        c.options.forEach(opt => {
-            optionsHTML += `<option value="${opt.val}">${opt.text}</option>`;
-        });
+  let cls=total<=21?'Operacional':total<=30?'Tática':'Estratégica';
+  const alrt=document.getElementById('mandatory-alert');
+  alrt.style.display='none';
+  if(vals.relevancia===3&&(vals.impacto===3||vals.leads===3)){cls='Estratégica';alrt.style.display='block';}
 
-        tr.innerHTML = `
-            <td><strong>${c.name}</strong> (Peso: ${c.weight})</td>
-            <td>
-                <select id="${c.id}" onchange="calculate()">
-                    ${optionsHTML}
-                </select>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+  document.getElementById('total-score').textContent=total;
 
-    function calculate() {
-        let total = 0;
-        let vals = {};
+  const pct=Math.max(0,Math.min(100,((total-13)/26)*100));
+  const fill=document.getElementById('track-fill');
+  fill.style.width=pct+'%';
+  fill.style.background=TIER[cls].fill;
 
-        criteria.forEach(c => {
-            const val = parseInt(document.getElementById(c.id).value);
-            vals[c.id] = val;
-            total += val * c.weight;
-        });
+  const t=TIER[cls];
+  document.getElementById('badge-area').innerHTML=
+    `<span class="badge ${t.cls}"><span class="badge-dot" style="background:${t.fill}"></span>${cls}</span>`;
 
-        let classification = '';
-        if (total >= 13 && total <= 21) classification = 'Operacional';
-        else if (total >= 22 && total <= 30) classification = 'Tática';
-        else if (total >= 31 && total <= 39) classification = 'Estratégica';
+  const g=GOV[cls];
+  document.getElementById('gov-mon').textContent=g.mon;
+  document.getElementById('gov-tom').textContent=g.tom;
+  document.getElementById('gov-apr').textContent=g.apr;
+  document.getElementById('gov-are').textContent=g.are;
+  document.getElementById('gov-ind').textContent=g.ind;
+}
 
-        const mandatoryAlert = document.getElementById('mandatory-alert');
-        mandatoryAlert.style.display = 'none';
-
-        if (vals['relevancia'] === 3 && (vals['impacto'] === 3 || vals['leads'] === 3)) {
-            classification = 'Estratégica';
-            mandatoryAlert.style.display = 'block';
-        }
-
-        document.getElementById('total-score').innerText = total;
-        document.getElementById('final-classification').innerText = classification;
-
-        if (classification) {
-            document.getElementById('gov-monitoramento').innerText = governanceRules[classification].monitoramento;
-            document.getElementById('gov-tomada').innerText = governanceRules[classification].tomada;
-            document.getElementById('gov-aprovacao').innerText = governanceRules[classification].aprovacao;
-            document.getElementById('gov-areas').innerText = governanceRules[classification].areas;
-            document.getElementById('gov-indicadores').innerText = governanceRules[classification].indicadores;
-        }
-    }
-
-    calculate(); 
+calc();
 </script>
-
 </body>
 </html>
