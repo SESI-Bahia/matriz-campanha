@@ -88,78 +88,78 @@
         { 
             id: 'relevancia', name: 'Relevância para o negócio', weight: 3,
             options: [
-                { val: 1, text: "Operacional (1) - Produto não especificado em PA" },
-                { val: 2, text: "Tática (2) - Produto em PA dos gerentes comerciais, de negócio e gerentes de unidade" },
-                { val: 3, text: "Estratégica (3) - Produto priorizado para o ano vigente (está em PA Diretor e Superintendentes, gera receita relevante...) Impacto na imagem institucional" }
+                { val: 1, text: "1 - Produto não especificado em PA" },
+                { val: 2, text: "2 - Produto em PA dos gerentes comerciais, de negócio e gerentes de unidade" },
+                { val: 3, text: "3 - Produto priorizado para o ano vigente (está em PA Diretor e Superintendentes, gera receita relevante...) Impacto na imagem institucional" }
             ]
         },
         { 
             id: 'impacto', name: 'Impacto nas Metas do Negócio', weight: 3,
             options: [
-                { val: 1, text: "Operacional (1) - comunicação rotineira, relacionamento/divulgação pontual, sem impacto relevante em metas financeiras." },
-                { val: 2, text: "Tática (2) - metas específicas de unidade, produto, região ou público prioritário, com impacto moderado nos resultados." },
-                { val: 3, text: "Estratégica (3) - metas prioritárias institucionais, crescimento relevante de receita, expansão estratégica. Com alto impacto nos resultados da Instituição" }
+                { val: 1, text: "1 - Comunicação rotineira, relacionamento/divulgação pontual, sem impacto relevante em metas financeiras." },
+                { val: 2, text: "2 - Metas específicas de unidade, produto, região ou público prioritário, com impacto moderado nos resultados." },
+                { val: 3, text: "3 - Metas prioritárias institucionais, crescimento relevante de receita, expansão estratégica. Com alto impacto nos resultados da Instituição" }
             ]
         },
         { 
             id: 'leads', name: 'Gestão e conversão de leads', weight: 2,
             options: [
-                { val: 1, text: "Operacional (1) - Campanha de alcance. Baixo esforço de conversão" },
-                { val: 2, text: "Tática (2) - Até 02 canais de origem de leads. Régua de relacionamento aplicada em etapa especifica da jornada do lead. Médio esforço para conversão" },
-                { val: 3, text: "Estratégica (3) - Diversidade de origem de leads. Régua de relacionamento aplicada em varias etapas da jornada do lead. Alto esforço para conversão" }
+                { val: 1, text: "1 - Campanha de alcance. Baixo esforço de conversão" },
+                { val: 2, text: "2 - Até 02 canais de origem de leads. Régua de relacionamento aplicada em etapa especifica da jornada do lead. Médio esforço para conversão" },
+                { val: 3, text: "3 - Diversidade de origem de leads. Régua de relacionamento aplicada em varias etapas da jornada do lead. Alto esforço para conversão" }
             ]
         },
         { 
             id: 'esforco', name: 'Esforço da Operação da Campanha', weight: 2,
             options: [
-                { val: 1, text: "Operacional (1) - Comunicação informa e/ou consulta demais áreas" },
-                { val: 2, text: "Tática (2) - Envolvimento das áreas de comunicação, MKT e Comercial" },
-                { val: 3, text: "Estratégica (3) - Forte envolvimento das áreas de Comunicação, MKT e Comercial" }
+                { val: 1, text: "1 - Comunicação informa e/ou consulta demais áreas" },
+                { val: 2, text: "2 - Envolvimento das áreas de comunicação, MKT e Comercial" },
+                { val: 3, text: "3 - Forte envolvimento das áreas de Comunicação, MKT e Comercial" }
             ]
         },
         { 
             id: 'mix', name: 'Mix de Meios', weight: 1,
             options: [
-                { val: 1, text: "Operacional (1) - 1 canal" },
-                { val: 2, text: "Tática (2) - Até 3 canais" },
-                { val: 3, text: "Estratégica (3) - Acima de 3 canais" }
+                { val: 1, text: "1 - 1 canal" },
+                { val: 2, text: "2 - Até 3 canais" },
+                { val: 3, text: "3 - Acima de 3 canais" }
             ]
         },
         { 
             id: 'abrangencia', name: 'Abrangência', weight: 1,
             options: [
-                { val: 1, text: "Operacional (1) - 1 região" },
-                { val: 2, text: "Tática (2) - a partir de 2 regiões" },
-                { val: 3, text: "Estratégica (3) - A partir de 2 regiões" }
+                { val: 1, text: "1 - 1 região" },
+                { val: 2, text: "2 - a partir de 2 regiões" },
+                { val: 3, text: "3 - A partir de 2 regiões" }
             ]
         },
         { 
             id: 'investimento', name: 'Investimento da Campanha', weight: 1,
             options: [
-                { val: 1, text: "Operacional (1) - Até 20 mil" },
-                { val: 2, text: "Tática (2) - Entre 21 e 100 mil" },
-                { val: 3, text: "Estratégica (3) - Acima de 100 mil" }
+                { val: 1, text: "1 - Até 20 mil" },
+                { val: 2, text: "2 - Entre 21 e 100 mil" },
+                { val: 3, text: "3 - Acima de 100 mil" }
             ]
         }
     ];
 
     const governanceRules = {
         'Estratégica': { 
-            monitoramento: 'checkpoints de acordo com os canais e planejamento da campanha', 
+            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
             tomada: 'Compartilhada\nAjustes contínuos durante execução\nPode exigir exceções', 
             aprovacao: 'Superintendência de Negócio e/ou Gerencias de produto', 
             areas: 'Comunicação, MKT, Negócio e Comercial quando aplicável', 
             indicadores: 'Conversão e impacto nas metas do negócio' 
         },
         'Tática': { 
-            monitoramento: 'checkpoints de acordo com os canais e planejamento da campanha', 
+            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
             tomada: 'Gerencial\nAjustes Pontuais', 
             aprovacao: 'Gerências de Comunicação e MKT', 
             areas: 'Comunicação, MKT e Negócio', 
             indicadores: 'Leads, engajamento e performance' 
         },
         'Operacional': { 
-            monitoramento: 'checkpoints de acordo com os canais e planejamento da campanha', 
+            monitoramento: 'Checkpoints de acordo com os canais e planejamento da campanha', 
             tomada: 'Operacional\nFluxo padrão', 
             aprovacao: 'Especialistas e demandante', 
             areas: 'Comunicação e/ou MKT', 
